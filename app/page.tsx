@@ -584,8 +584,7 @@ export default function ShadaAILanding() {
                 transition={{ duration: 0.8, delay: 0.2 }}
                 viewport={{ once: true }}
               >
-                Bridging the gap between ancient wisdom and modern technology to 
-                preserve the invaluable heritage of Kashmir's Sharda script for future generations.
+                This project is sponsered by <span className='font-bold'>Department of Science & Technology, Government of India</span> (Grant No. DST/TOT/SHRI-M/2021)
               </motion.p>
 
               <motion.div

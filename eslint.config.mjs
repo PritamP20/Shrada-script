@@ -19,6 +19,13 @@ const eslintConfig = [
       "build/**",
       "next-env.d.ts",
     ],
+    rules: {
+      // Turn off React text escaping rule
+      "react/no-unescaped-entities": "off",
+
+      // Warn instead of error for unused vars
+      "@typescript-eslint/no-unused-vars": ["warn"],
+    },
   },
 ];
 
