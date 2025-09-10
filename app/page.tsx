@@ -1,132 +1,33 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
-import { 
-  BookOpen, 
-  Shield, 
-  Languages, 
-  Menu, 
-  X, 
-  ArrowRight, 
-  Github, 
-  Twitter, 
+import React from 'react';
+import { motion, useScroll } from 'framer-motion';
+import {
+  BookOpen,
+  Shield,
+  Languages,
+  ArrowRight,
+  GithubIcon as GitHub,
+  TwitterIcon as TwitterX,
   Mail,
-  Moon,
-  Sun,
   Sparkles,
   Cpu,
   Archive
 } from 'lucide-react';
-
+import Navbar from '../components/Navbar/Navbar';
 export default function ShadaAILanding() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isDarkMode, setIsDarkMode] = useState(false);
   const { scrollYProgress } = useScroll();
-  const yTransform = useTransform(scrollYProgress, [0, 1], [0, -50]);
 
-  useEffect(() => {
-    const darkMode = localStorage.getItem('darkMode') === 'true';
-    setIsDarkMode(darkMode);
-    document.documentElement.classList.toggle('dark', darkMode);
-  }, []);
 
-  const toggleDarkMode = () => {
-    const newDarkMode = !isDarkMode;
-    setIsDarkMode(newDarkMode);
-    localStorage.setItem('darkMode', newDarkMode.toString());
-    document.documentElement.classList.toggle('dark', newDarkMode);
-  };
-
-  const navItems = ['Home', 'About', 'Features', 'Significance', 'Get Involved', 'Contact'];
 
   return (
-    <div className={`min-h-screen transition-colors duration-300 ${isDarkMode ? 'dark' : ''}`}>
+    <div className="min-h-screen bg-white dark:bg-gray-900 transition-colors duration-300">
       {/* Navigation */}
-      <nav className="fixed top-0 left-0 right-0 z-50 backdrop-blur-md bg-white/10 dark:bg-black/20 border-b border-white/20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center py-4">
-            {/* Logo */}
-            <motion.div 
-              className="flex items-center space-x-3"
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6 }}
-            >
-              <div className="w-10 h-10 bg-gradient-to-r from-orange-500 to-yellow-600 rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-xl">श</span>
-              </div>
-              <span className="text-xl font-serif font-bold text-gray-900 dark:text-white">Sharda AI</span>
-            </motion.div>
+      <Navbar></Navbar>
 
-            {/* Desktop Navigation */}
-            <div className="hidden md:flex items-center space-x-8">
-              {navItems.map((item, index) => (
-                <motion.a
-                  key={item}
-                  href={`#${item.toLowerCase().replace(' ', '-')}`}
-                  className="text-gray-700 dark:text-gray-300 hover:text-orange-600 dark:hover:text-orange-400 transition-colors duration-300 font-medium"
-                  initial={{ opacity: 0, y: -20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: index * 0.1 }}
-                >
-                  {item}
-                </motion.a>
-              ))}
-              <button
-                onClick={toggleDarkMode}
-                className="p-2 rounded-lg bg-white/10 dark:bg-black/20 hover:bg-white/20 dark:hover:bg-black/30 transition-colors"
-              >
-                {isDarkMode ? <Sun className="w-5 h-5 text-yellow-500" /> : <Moon className="w-5 h-5 text-gray-700" />}
-              </button>
-              <motion.button
-                className="bg-gradient-to-r from-orange-500 to-yellow-600 text-white px-6 py-2 rounded-full hover:from-orange-600 hover:to-yellow-700 transition-all duration-300 shadow-lg hover:shadow-xl"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                Contribute
-              </motion.button>
-            </div>
-
-            {/* Mobile Menu Button */}
-            <button
-              className="md:hidden p-2 rounded-lg bg-white/10 dark:bg-black/20"
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
-            >
-              {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-            </button>
-          </div>
-        </div>
-
-        {/* Mobile Menu */}
-        {isMenuOpen && (
-          <motion.div
-            className="md:hidden bg-white/95 dark:bg-black/95 backdrop-blur-lg border-t border-white/20"
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-          >
-            <div className="px-4 py-6 space-y-4">
-              {navItems.map((item) => (
-                <a
-                  key={item}
-                  href={`#${item.toLowerCase().replace(' ', '-')}`}
-                  className="block text-gray-700 dark:text-gray-300 hover:text-orange-600 dark:hover:text-orange-400 transition-colors duration-300 font-medium"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  {item}
-                </a>
-              ))}
-              <button
-                className="w-full bg-gradient-to-r from-orange-500 to-yellow-600 text-white px-6 py-3 rounded-full hover:from-orange-600 hover:to-yellow-700 transition-all duration-300"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                Contribute
-              </button>
-            </div>
-          </motion.div>
-        )}
-      </nav>
+      {/* <div className='h-48 text-8xl p-9 bg-white dark:bg-black ' >
+        hello
+      </div> */}
 
       {/* Hero Section */}
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
@@ -234,8 +135,7 @@ export default function ShadaAILanding() {
       </section>
 
       {/* About Section */}
-      <section id="about" className="py-24 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-amber-50/50 to-orange-50/30 dark:from-gray-900/50 dark:to-black/30"></div>
+      <section id="about" className="py-24 relative overflow-hidden bg-amber-50/30 dark:bg-gray-900/50">
         <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICA8ZGVmcz4KICAgIDxwYXR0ZXJuIGlkPSJncmlkIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+CiAgICAgIDxwYXRoIGQ9Ik0gMTAwIDAgTCAwIDAgMCAxMDAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzAwMCIgc3Ryb2tlLXdpZHRoPSIwLjUiIHN0cm9rZS1vcGFjaXR5PSIwLjEiLz4KICAgIDwvcGF0dGVybj4KICA8L2RlZnM+CiAgPHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0idXJsKCNncmlkKSIvPgo8L3N2Zz4=')] opacity-20"></div>
         
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -264,7 +164,7 @@ export default function ShadaAILanding() {
               viewport={{ once: true }}
               className="space-y-6"
             >
-              <div className="bg-white/80 dark:bg-black/20 backdrop-blur-lg rounded-2xl p-8 shadow-xl border border-orange-200/50 dark:border-orange-500/30">
+              <div className="bg-white/80 dark:bg-gray-800/40 backdrop-blur-lg rounded-2xl p-8 shadow-xl border border-orange-200/50 dark:border-orange-500/30">
                 <h3 className="text-2xl font-serif font-bold text-gray-900 dark:text-white mb-4">
                   Ancient Wisdom
                 </h3>
@@ -303,9 +203,7 @@ export default function ShadaAILanding() {
       </section>
 
       {/* Features Section */}
-      <section id="features" className="py-24 relative">
-        <div className="absolute inset-0 bg-gradient-to-br from-gray-50 to-orange-50/50 dark:from-black dark:to-gray-900"></div>
-        
+      <section id="features" className="py-24 relative bg-gray-50 dark:bg-gray-800">
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             className="text-center mb-16"
@@ -351,7 +249,7 @@ export default function ShadaAILanding() {
                 transition={{ duration: 0.8, delay: index * 0.2 }}
                 viewport={{ once: true }}
               >
-                <div className="bg-white/80 dark:bg-black/20 backdrop-blur-lg rounded-2xl p-8 shadow-xl border border-orange-200/50 dark:border-orange-500/30 h-full hover:shadow-2xl transition-all duration-300 group-hover:border-orange-300/70 dark:group-hover:border-orange-400/50">
+                <div className="bg-white/80 dark:bg-gray-700/40 backdrop-blur-lg rounded-2xl p-8 shadow-xl border border-orange-200/50 dark:border-orange-500/30 h-full hover:shadow-2xl transition-all duration-300 group-hover:border-orange-300/70 dark:group-hover:border-orange-400/50">
                   <div className={`w-16 h-16 bg-gradient-to-r ${feature.gradient} rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300`}>
                     <feature.icon className="w-8 h-8 text-white" />
                   </div>
@@ -371,8 +269,7 @@ export default function ShadaAILanding() {
       </section>
 
       {/* Cultural Significance Section */}
-      <section id="significance" className="py-24 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-orange-900/20 to-amber-900/30 dark:from-orange-900/40 dark:to-amber-900/20"></div>
+      <section id="significance" className="py-24 relative overflow-hidden bg-orange-50 dark:bg-gray-900">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(251,146,60,0.1),transparent_70%)]"></div>
         
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -397,7 +294,7 @@ export default function ShadaAILanding() {
               viewport={{ once: true }}
               className="space-y-8"
             >
-              <div className="bg-white/10 dark:bg-black/20 backdrop-blur-lg rounded-2xl p-8 border border-orange-200/30 dark:border-orange-500/30">
+              <div className="bg-white/60 dark:bg-gray-800/40 backdrop-blur-lg rounded-2xl p-8 border border-orange-200/30 dark:border-orange-500/30">
                 <h3 className="text-2xl font-serif font-bold text-gray-900 dark:text-white mb-4">
                   Cultural Heritage
                 </h3>
@@ -505,7 +402,7 @@ export default function ShadaAILanding() {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
-                <Github className="w-6 h-6" />
+                 <GitHub className="w-6 h-6" />
                 <span>Contribute on GitHub</span>
               </motion.button>
               
@@ -584,7 +481,7 @@ export default function ShadaAILanding() {
                 transition={{ duration: 0.8, delay: 0.2 }}
                 viewport={{ once: true }}
               >
-                This project is sponsered by <span className='font-bold'>Department of Science & Technology, Government of India</span> (Grant No. DST/TOT/SHRI-M/2021)
+                This project is sponsored by <span className='font-bold'>Department of Science & Technology, Government of India</span> (Grant No. DST/TOT/SHRI-M/2021)
               </motion.p>
 
               <motion.div
@@ -595,10 +492,10 @@ export default function ShadaAILanding() {
                 viewport={{ once: true }}
               >
                 <a href="#" className="w-10 h-10 bg-orange-600 hover:bg-orange-700 rounded-full flex items-center justify-center transition-colors duration-300">
-                  <Github className="w-5 h-5" />
+                   <GitHub className="w-5 h-5" />
                 </a>
                 <a href="#" className="w-10 h-10 bg-orange-600 hover:bg-orange-700 rounded-full flex items-center justify-center transition-colors duration-300">
-                  <Twitter className="w-5 h-5" />
+                   <TwitterX className="w-5 h-5" />
                 </a>
                 <a href="#" className="w-10 h-10 bg-orange-600 hover:bg-orange-700 rounded-full flex items-center justify-center transition-colors duration-300">
                   <Mail className="w-5 h-5" />

@@ -1,37 +1,11 @@
 'use client';
 
-import React, { useState, useRef, useEffect, createContext, useContext } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Send, Sun, Moon, User, Bot, Plus, ArrowUp } from 'lucide-react';
-
-// Theme Context
-const ThemeContext = createContext();
-
-const ThemeProvider = ({ children }) => {
-  const [isDark, setIsDark] = useState(false);
-
-  const toggleTheme = () => {
-    setIsDark(!isDark);
-  };
-
-  return (
-    <ThemeContext.Provider value={{ isDark, toggleTheme }}>
-      <div className={isDark ? 'dark' : ''}>
-        {children}
-      </div>
-    </ThemeContext.Provider>
-  );
-};
-
-const useTheme = () => {
-  const context = useContext(ThemeContext);
-  if (!context) {
-    throw new Error('useTheme must be used within ThemeProvider');
-  }
-  return context;
-};
+import { useTheme } from 'next-themes';
 
 const ChatbotUI = () => {
-  const { isDark, toggleTheme } = useTheme();
+  const { theme, setTheme } = useTheme();
   const [messages, setMessages] = useState([
     {
       id: 1,
@@ -126,16 +100,22 @@ const ChatbotUI = () => {
     setInputValue('');
   };
 
+  const toggleTheme = () => {
+    setTheme(theme === 'dark' ? 'light' : 'dark');
+  };
+
+  const isDark = theme === 'dark';
+
   return (
     <div className={`flex h-screen ${
-      isDark 
+      isDark
         ? 'bg-slate-950' 
         : 'bg-white'
     }`}>
       
       {/* Sidebar */}
       <div className={`hidden lg:flex flex-col w-72 border-r ${
-        isDark 
+        isDark
           ? 'bg-slate-900 border-slate-800' 
           : 'bg-slate-50 border-slate-200'
       }`}>
@@ -146,7 +126,7 @@ const ChatbotUI = () => {
             onClick={newChat}
             className={`w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg border text-sm font-medium transition-colors ${
               isDark
-                ? 'bg-slate-800 border-slate-700 text-slate-300 hover:bg-slate-750'
+                ? 'bg-slate-800 border-slate-700 text-slate-300 hover:bg-slate-700'
                 : 'bg-white border-slate-300 text-slate-700 hover:bg-slate-50'
             }`}
           >
@@ -167,7 +147,7 @@ const ChatbotUI = () => {
               <button
                 key={i}
                 className={`w-full text-left px-3 py-2 rounded-md text-sm transition-colors ${
-                  isDark 
+                  isDark
                     ? 'text-slate-400 hover:bg-slate-800 hover:text-slate-300' 
                     : 'text-slate-600 hover:bg-slate-100 hover:text-slate-700'
                 }`}
@@ -179,11 +159,13 @@ const ChatbotUI = () => {
         </div>
         
         {/* Theme Toggle */}
-        <div className="p-4 border-t border-slate-200 dark:border-slate-800">
+        <div className={`p-4 border-t ${
+          isDark ? 'border-slate-800' : 'border-slate-200'
+        }`}>
           <button
             onClick={toggleTheme}
             className={`w-full flex items-center gap-3 px-3 py-2 rounded-md text-sm transition-colors ${
-              isDark 
+              isDark
                 ? 'text-slate-400 hover:bg-slate-800 hover:text-slate-300' 
                 : 'text-slate-600 hover:bg-slate-100 hover:text-slate-700'
             }`}
@@ -199,7 +181,7 @@ const ChatbotUI = () => {
         
         {/* Mobile Header */}
         <div className={`lg:hidden flex items-center justify-between p-4 border-b ${
-          isDark 
+          isDark
             ? 'bg-slate-900 border-slate-800' 
             : 'bg-white border-slate-200'
         }`}>
@@ -222,7 +204,7 @@ const ChatbotUI = () => {
             <button
               onClick={toggleTheme}
               className={`p-2 rounded-lg transition-colors ${
-                isDark 
+                isDark
                   ? 'hover:bg-slate-800 text-slate-400' 
                   : 'hover:bg-slate-100 text-slate-600'
               }`}
@@ -254,7 +236,7 @@ const ChatbotUI = () => {
                   
                   <div className="flex-1 min-w-0">
                     <div className={`font-semibold mb-2 ${
-                      isDark 
+                      isDark
                         ? message.sender === 'user' ? 'text-white' : 'text-white'
                         : message.sender === 'user' ? 'text-slate-900' : 'text-slate-900'
                     }`}>
@@ -262,7 +244,7 @@ const ChatbotUI = () => {
                     </div>
                     
                     <div className={`prose max-w-none ${
-                      isDark 
+                      isDark
                         ? 'text-slate-300' 
                         : 'text-slate-700'
                     }`}>
@@ -314,7 +296,7 @@ const ChatbotUI = () => {
 
         {/* Input Area */}
         <div className={`border-t ${
-          isDark 
+          isDark
             ? 'bg-slate-900 border-slate-800' 
             : 'bg-white border-slate-200'
         }`}>
@@ -327,7 +309,7 @@ const ChatbotUI = () => {
                 onKeyPress={handleKeyPress}
                 placeholder="Type your message..."
                 className={`w-full px-4 py-3 pr-12 rounded-xl border resize-none transition-all focus:outline-none focus:ring-2 focus:ring-orange-500 ${
-                  isDark 
+                  isDark
                     ? 'bg-slate-800 border-slate-700 text-white placeholder-slate-400' 
                     : 'bg-white border-slate-300 text-slate-900 placeholder-slate-500'
                 }`}
@@ -363,11 +345,7 @@ const ChatbotUI = () => {
 };
 
 const Page = () => {
-  return (
-    <ThemeProvider>
-      <ChatbotUI />
-    </ThemeProvider>
-  );
+  return <ChatbotUI />;
 };
 
 export default Page;
