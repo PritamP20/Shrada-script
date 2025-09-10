@@ -1,0 +1,7 @@
+{
+  "prompt": "A beautiful sunset over mountains with birds flying in the distance",
+  "model": "veo2_fast",
+  "image": "data:image/jpeg;base64,",
+  "seed": 12345,
+  "language": "en"
+}
