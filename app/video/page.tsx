@@ -91,41 +91,49 @@ const ChatbotUI = () => {
   };
 
   const getGeminiResponse = async (userMessage: string, attachedFile?: File): Promise<string> => {
-    const prompt = `
-      You are a knowledgeable assistant specialized in Indian cities, culture, history, festivals, and local information.
-      Answer user questions accurately, provide examples, and keep the response informative and friendly. Give the response with proper markdown formatting and spacings.
-    `;
+  const prompt = `
+    You are a knowledgeable assistant specialized in Indian cities, culture, history, festivals, and local information.
+    Answer user questions accurately, provide examples, and keep the response informative and friendly. Give the response with proper markdown formatting and spacings.
+  `;
 
-    const contents: any[] = [
-      { text: prompt },
-      { text: userMessage }
-    ];
+  const contents: any[] = [
+    { text: prompt },
+    { text: userMessage }
+  ];
 
-    if (attachedFile) {
-      const base64 = await fileToBase64(attachedFile);
-      contents.push({
-        inline_data: { mime_type: attachedFile.type, data: base64 }
-      });
-    }
+  if (attachedFile) {
+    const base64 = await fileToBase64(attachedFile);
+    contents.push({
+      parts: [
+        {
+          inline: {
+            mime_type: attachedFile.type,
+            data: base64
+          }
+        }
+      ]
+    });
+  }
 
-    try {
-      const response = await ai.models.generateContent({
-        model: 'gemini-2.5-flash',
-        contents,
-        generationConfig: {
-          temperature: 0.7,
-          topK: 40,
-          topP: 0.95,
-          maxOutputTokens: 1024,
-        },
-      });
+  try {
+    const response = await ai.models.generateContent({
+      model: 'gemini-2.5-flash',
+      contents,
+      generationConfig: {
+        temperature: 0.7,
+        topK: 40,
+        topP: 0.95,
+        maxOutputTokens: 1024,
+      },
+    });
 
-      return response.text || "I'm sorry, I couldn't generate a response.";
-    } catch (error) {
-      console.error('Gemini API Error:', error);
-      return "AI service not available. Please try again later.";
-    }
-  };
+    return response.text || "I'm sorry, I couldn't generate a response.";
+  } catch (error) {
+    console.error('Gemini API Error:', error);
+    return "AI service not available. Please try again later.";
+  }
+};
+
 
   const fileToBase64 = (file: File): Promise<string> =>
     new Promise((resolve, reject) => {
