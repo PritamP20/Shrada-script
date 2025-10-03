@@ -1,6 +1,9 @@
-import { Calendar, Home, Inbox, Search, Settings, User, HelpCircle, LogOut, ChevronRight, Palette, Bell, Shield, Database, Sun, Moon } from "lucide-react"
-import { useState } from "react"
-import { useTheme } from "next-themes"
+import { 
+  Calendar, Home, Inbox, Search, Settings, User, HelpCircle, LogOut, 
+  ChevronRight, Palette, Bell, Shield, Database, Sun, Moon 
+} from "lucide-react";
+import { useState } from "react";
+import { useTheme } from "next-themes";
 
 import {
   Sidebar,
@@ -15,158 +18,56 @@ import {
   SidebarMenuSubItem,
   SidebarMenuSubButton,
   SidebarFooter,
-} from "@/components/ui/sidebar"
+} from "@/components/ui/sidebar";
 
-// Main menu items.
+// ---------- Menu Data ----------
 const mainItems = [
-  {
-    title: "Home",
-    url: "#",
-    icon: Home,
-  },
-  {
-    title: "Inbox",
-    url: "#",
-    icon: Inbox,
-  },
-  {
-    title: "Calendar",
-    url: "#",
-    icon: Calendar,
-  },
-  {
-    title: "Search",
-    url: "#",
-    icon: Search,
-  },
-  {
-    title: "Settings",
-    url: "#",
-    icon: Settings,
-  },
-]
+  { title: "Home", url: "#", icon: Home },
+  { title: "Inbox", url: "#", icon: Inbox },
+  { title: "Calendar", url: "#", icon: Calendar },
+  { title: "Search", url: "#", icon: Search },
+  { title: "Settings", url: "#", icon: Settings },
+];
 
-// Calendar months
-const calendarMonths = [
-  {
-    title: "January",
-    url: "#",
-    icon: Calendar,
-  },
-  {
-    title: "February",
-    url: "#",
-    icon: Calendar,
-  },
-  {
-    title: "March",
-    url: "#",
-    icon: Calendar,
-  },
-  {
-    title: "April",
-    url: "#",
-    icon: Calendar,
-  },
-  {
-    title: "May",
-    url: "#",
-    icon: Calendar,
-  },
-  {
-    title: "June",
-    url: "#",
-    icon: Calendar,
-  },
-  {
-    title: "July",
-    url: "#",
-    icon: Calendar,
-  },
-  {
-    title: "August",
-    url: "#",
-    icon: Calendar,
-  },
-  {
-    title: "September",
-    url: "#",
-    icon: Calendar,
-  },
-  {
-    title: "October",
-    url: "#",
-    icon: Calendar,
-  },
-  {
-    title: "November",
-    url: "#",
-    icon: Calendar,
-  },
-  {
-    title: "December",
-    url: "#",
-    icon: Calendar,
-  },
-]
+const calendarMonths = Array.from({ length: 12 }).map((_, i) => ({
+  title: new Date(0, i).toLocaleString("default", { month: "long" }),
+  url: "#",
+  icon: Calendar,
+}));
 
-// User menu items.
 const userItems = [
-  {
-    title: "Profile",
-    url: "#",
-    icon: User,
-  },
-  {
-    title: "Help",
-    url: "#",
-    icon: HelpCircle,
-  },
-]
+  { title: "Profile", url: "#", icon: User },
+  { title: "Help", url: "#", icon: HelpCircle },
+];
 
-// Settings subcategories
 const settingsItems = [
-  {
-    title: "Appearance",
-    url: "#",
-    icon: Palette,
-  },
-  {
-    title: "Notifications",
-    url: "#",
-    icon: Bell,
-  },
-  {
-    title: "Privacy",
-    url: "#",
-    icon: Shield,
-  },
-  {
-    title: "Data & Storage",
-    url: "#",
-    icon: Database,
-  },
-]
+  { title: "Appearance", url: "#", icon: Palette },
+  { title: "Notifications", url: "#", icon: Bell },
+  { title: "Privacy", url: "#", icon: Shield },
+  { title: "Data & Storage", url: "#", icon: Database },
+];
 
+// ---------- Sidebar Component ----------
 export function AppSidebar() {
-  const [settingsOpen, setSettingsOpen] = useState(false)
-  const { theme, setTheme } = useTheme()
+  const [settingsOpen, setSettingsOpen] = useState(false);
+  const { theme, setTheme } = useTheme();
 
-  const toggleTheme = () => {
-    setTheme(theme === 'dark' ? 'light' : 'dark')
-  }
+  const toggleTheme = () => setTheme(theme === "dark" ? "light" : "dark");
 
   return (
-    <Sidebar collapsible="icon">
+    <Sidebar collapsible="icon" className="flex flex-col justify-between">
+      {/* Main Content */}
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupLabel>Shardha Script</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
+
+              {/* Home & Inbox */}
               {mainItems.slice(0, 2).map((item) => (
                 <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild >
-                    <a href={item.url}>
+                  <SidebarMenuButton asChild>
+                    <a href={item.url} className="flex items-center gap-2">
                       <item.icon />
                       <span>{item.title}</span>
                     </a>
@@ -174,7 +75,7 @@ export function AppSidebar() {
                 </SidebarMenuItem>
               ))}
 
-              {/* Calendar with always-visible submenu */}
+              {/* Calendar with Submenu */}
               <SidebarMenuItem>
                 <SidebarMenuButton>
                   <Calendar />
@@ -203,19 +104,19 @@ export function AppSidebar() {
                 </SidebarMenuButton>
               </SidebarMenuItem>
 
-              {/* Settings */}
+              {/* Settings with toggle */}
               <SidebarMenuItem>
                 <SidebarMenuButton onClick={() => setSettingsOpen(!settingsOpen)}>
                   <Settings />
                   <span>Settings</span>
-                  <ChevronRight className={`ml-auto sidebar-chevron ${settingsOpen ? 'rotate-90' : ''}`} />
+                  <ChevronRight className={`ml-auto transition-transform ${settingsOpen ? "rotate-90" : ""}`} />
                 </SidebarMenuButton>
                 {settingsOpen && (
                   <SidebarMenuSub>
                     {settingsItems.map((item) => (
                       <SidebarMenuSubItem key={item.title}>
                         <SidebarMenuSubButton asChild>
-                          <a href={item.url}>
+                          <a href={item.url} className="flex items-center gap-2">
                             <item.icon />
                             <span>{item.title}</span>
                           </a>
@@ -225,51 +126,49 @@ export function AppSidebar() {
                   </SidebarMenuSub>
                 )}
               </SidebarMenuItem>
+
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
-
-        
       </SidebarContent>
-      <SidebarFooter>
-          <SidebarGroupLabel>Account</SidebarGroupLabel>
-          <SidebarGroupContent>
 
+      {/* Footer: User & Theme */}
+      <SidebarFooter>
+        <SidebarGroupLabel>Account</SidebarGroupLabel>
+        <SidebarGroupContent>
+          <SidebarMenu>
+            {/* Theme toggle */}
             <SidebarMenuItem>
-                <SidebarMenuButton onClick={toggleTheme}>
-                  {theme === 'dark' ? <Sun /> : <Moon />}
-                  <span>{theme === 'dark' ? 'Light Mode' : 'Dark Mode'}</span>
+              <SidebarMenuButton onClick={toggleTheme} className="flex items-center gap-2">
+                {theme === "dark" ? <Sun /> : <Moon />}
+                <span>{theme === "dark" ? "Light Mode" : "Dark Mode"}</span>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+
+            {/* User items */}
+            {userItems.map((item) => (
+              <SidebarMenuItem key={item.title}>
+                <SidebarMenuButton asChild>
+                  <a href={item.url} className="flex items-center gap-2">
+                    <item.icon />
+                    <span>{item.title}</span>
+                  </a>
                 </SidebarMenuButton>
               </SidebarMenuItem>
+            ))}
 
-            <SidebarMenu>
-              {userItems.map((item) => (
-                <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild>
-                    <a href={item.url}>
-                      <item.icon />
-                      <span>{item.title}</span>
-                    </a>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
-
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarFooter>
-
-      <SidebarFooter>
-        <SidebarMenu>
-          <SidebarMenuItem>
-            <SidebarMenuButton asChild>
-              <a href="#">
-                <LogOut />
-                <span>Logout</span>
-              </a>
-            </SidebarMenuButton>
-          </SidebarMenuItem>
-        </SidebarMenu>
+            {/* Logout */}
+            <SidebarMenuItem>
+              <SidebarMenuButton asChild>
+                <a href="#" className="flex items-center gap-2">
+                  <LogOut />
+                  <span>Logout</span>
+                </a>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+          </SidebarMenu>
+        </SidebarGroupContent>
       </SidebarFooter>
     </Sidebar>
-  )
+  );
 }

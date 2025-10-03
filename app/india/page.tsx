@@ -121,54 +121,48 @@ export default function Page() {
   }, [selected]);
 
   return (
-    <div className="flex items-start justify-between min-h-screen bg-gradient-to-br from-gray-50 to-blue-50 gap-6 p-6">
+    <div className="flex items-start justify-between min-h-screen bg-[#FFF8E1] gap-6 p-6">
       {/* LEFT - State History */}
-      <div className="flex-1 bg-white rounded-2xl shadow-lg p-6 max-h-[90vh] overflow-y-auto">
+      <div className="flex-1 bg-[#FFFFFF] rounded-2xl shadow-lg p-6 max-h-[90vh] overflow-y-auto border-l-4 border-[#FF6F00]">
         {loading ? (
           <div className="flex items-center justify-center h-full text-center">
-            <div className="animate-spin rounded-full h-16 w-16 border-b-4 border-blue-600 mx-auto mb-4"></div>
-            <p className="text-gray-600">Generating information...</p>
+            <div className="animate-spin rounded-full h-16 w-16 border-b-4 border-[#FF6F00] mx-auto mb-4"></div>
+            <p className="text-[#212121]">Generating information...</p>
           </div>
         ) : error ? (
           <div className="flex items-center justify-center h-full text-center">
             <div>
-              <div className="text-6xl mb-4">⚠️</div>
-              <p className="text-red-600 font-semibold mb-2">Error Loading Data</p>
-              <p className="text-gray-600 text-sm">{error}</p>
+              <div className="text-6xl mb-4 text-[#C62828]">⚠️</div>
+              <p className="text-[#C62828] font-semibold mb-2">Error Loading Data</p>
+              <p className="text-[#616161] text-sm">{error}</p>
             </div>
           </div>
         ) : selectedData ? (
           <>
-            <h2 className="text-3xl font-bold mb-4 text-blue-800">{selected}</h2>
+            <h2 className="text-3xl font-bold mb-4 text-[#FF6F00]">{selected}</h2>
             <div className="space-y-3 mb-4">
-              <p className="text-gray-700">
-                <span className="font-semibold text-blue-600">Capital:</span>{" "}
-                {selectedData.capital}
+              <p className="text-[#212121]">
+                <span className="font-semibold text-[#1976D2]">Capital:</span> {selectedData.capital}
               </p>
-              <p className="text-gray-700">
-                <span className="font-semibold text-blue-600">Population:</span>{" "}
-                {selectedData.population}
+              <p className="text-[#212121]">
+                <span className="font-semibold text-[#1976D2]">Population:</span> {selectedData.population}
               </p>
-              <p className="text-gray-700">
-                <span className="font-semibold text-blue-600">Area:</span>{" "}
-                {selectedData.area}
+              <p className="text-[#212121]">
+                <span className="font-semibold text-[#1976D2]">Area:</span> {selectedData.area}
               </p>
-              <p className="text-gray-700">
-                <span className="font-semibold text-blue-600">Languages:</span>{" "}
-                {selectedData.languages}
+              <p className="text-[#212121]">
+                <span className="font-semibold text-[#1976D2]">Languages:</span> {selectedData.languages}
               </p>
             </div>
-            <div className="border-t border-gray-200 pt-4">
-              <h3 className="text-xl font-semibold mb-3 text-amber-700 flex items-center">
+            <div className="border-t border-[#1976D2] pt-4">
+              <h3 className="text-xl font-semibold mb-3 text-[#C62828] flex items-center">
                 <span className="mr-2">📜</span> Historical Background
               </h3>
-              <p className="text-gray-700 leading-relaxed text-justify">
-                {selectedData.history}
-              </p>
+              <p className="text-[#212121] leading-relaxed text-justify">{selectedData.history}</p>
             </div>
           </>
         ) : (
-          <div className="flex items-center justify-center h-full text-gray-500">
+          <div className="flex items-center justify-center h-full text-[#616161]">
             <div className="text-center">
               <span className="text-6xl mb-4 block">🏛️</span>
               <p className="text-lg">Select a state to explore its history</p>
@@ -182,34 +176,39 @@ export default function Page() {
         <svg
           viewBox={viewBox}
           xmlns="http://www.w3.org/2000/svg"
-          className="w-[600px] h-auto rounded-xl shadow-xl bg-white p-4"
+          className="w-[600px] h-auto rounded-xl shadow-xl bg-[#FFFFFF] p-4 border-2 border-[#1976D2]"
         >
           {locations.map((loc) => (
             <path
               key={loc.id}
               d={loc.path}
-              fill={selected === loc.name ? "#3b82f6" : "#e5e7eb"}
-              stroke="#374151"
+              fill={selected === loc.name ? "#FF6F00" : "#E0E0E0"}
+              stroke="#212121"
               strokeWidth={0.5}
-              className="cursor-pointer transition-all duration-200 hover:fill-blue-400"
+              className="cursor-pointer transition-all duration-200 hover:fill-[#F9A825]"
               onClick={() => setSelected(loc.name)}
             />
           ))}
         </svg>
 
         {selected && (
-          <div className="mt-4 px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white text-lg rounded-full shadow-lg">
-            <span className="font-semibold">{selected}</span>
+          <div className="mt-6 flex items-center gap-5">
+            <div className="px-6 py-3 bg-[#FF6F00] text-white text-lg rounded-full shadow-lg">
+              <span className="font-semibold">{selected}</span>
+            </div>
+            <div className="px-6 py-3 bg-[#1976D2] text-white text-lg rounded-full shadow-lg">
+              <span className="font-semibold">View In Detail</span>
+            </div>
           </div>
         )}
       </div>
 
       {/* RIGHT - Cultural Information */}
-      <div className="flex-1 bg-white rounded-2xl shadow-lg p-6 max-h-[90vh] overflow-y-auto">
+      <div className="flex-1 bg-[#FFFFFF] rounded-2xl shadow-lg p-6 max-h-[90vh] overflow-y-auto border-r-4 border-[#FF6F00]">
         {loading ? (
           <div className="flex items-center justify-center h-full text-center">
-            <div className="animate-spin rounded-full h-16 w-16 border-b-4 border-purple-600 mx-auto mb-4"></div>
-            <p className="text-gray-600">Loading cultural insights...</p>
+            <div className="animate-spin rounded-full h-16 w-16 border-b-4 border-[#388E3C] mx-auto mb-4"></div>
+            <p className="text-[#212121]">Loading cultural insights...</p>
           </div>
         ) : selectedData ? (
           <>
@@ -217,39 +216,37 @@ export default function Page() {
               <img
                 src={selectedData.mainImage}
                 alt={selected}
-                className="w-full h-64 object-cover rounded-xl shadow-md"
+                className="w-full h-64 object-cover rounded-xl shadow-md border-2 border-[#1976D2]"
               />
             </div>
 
-            <div className="border-b border-gray-200 pb-4 mb-4">
-              <h3 className="text-xl font-semibold mb-3 text-green-700 flex items-center">
+            <div className="border-b border-[#1976D2] pb-4 mb-4">
+              <h3 className="text-xl font-semibold mb-3 text-[#388E3C] flex items-center">
                 <span className="mr-2">🎨</span> Cultural Heritage
               </h3>
-              <p className="text-gray-700 leading-relaxed text-justify">
-                {selectedData.culture}
-              </p>
+              <p className="text-[#212121] leading-relaxed text-justify">{selectedData.culture}</p>
             </div>
 
             <div>
-              <h4 className="text-lg font-semibold mb-3 text-purple-700 flex items-center">
+              <h4 className="text-lg font-semibold mb-3 text-[#C62828] flex items-center">
                 <span className="mr-2">✨</span> Cultural Highlights
               </h4>
               <div className="grid grid-cols-2 gap-3">
                 {selectedData.highlights.map((highlight, idx) => (
-                  <div key={idx} className="text-center bg-gray-50 rounded-lg p-3">
+                  <div key={idx} className="text-center bg-[#FFF8E1] rounded-lg p-3 border border-[#1976D2]">
                     <img
                       src={highlight.image}
                       alt={highlight.name}
-                      className="w-full h-28 object-cover rounded-lg shadow-sm mb-2"
+                      className="w-full h-28 object-cover rounded-lg shadow-sm mb-2 border-2 border-[#FF6F00]"
                     />
-                    <p className="text-sm font-medium text-gray-700">{highlight.name}</p>
+                    <p className="text-sm font-medium text-[#212121]">{highlight.name}</p>
                   </div>
                 ))}
               </div>
             </div>
           </>
         ) : (
-          <div className="flex items-center justify-center h-full text-gray-500">
+          <div className="flex items-center justify-center h-full text-[#616161]">
             <div className="text-center">
               <span className="text-6xl mb-4 block">🎭</span>
               <p className="text-lg">Select a state to discover its culture</p>
