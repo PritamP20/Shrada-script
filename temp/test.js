@@ -3,7 +3,7 @@ import { OpenAI } from "openai";
 const baseURL = "https://api.aimlapi.com/v1";
 
 // Insert your AIML API Key in the quotation marks instead of my_key:
-const apiKey = "<YOUR_AIMLAPI_KEY>"; 
+const apiKey = "AIzaSyCzOAdVfUSllbeQlWmaEKSqXoHwKeIc2kk"; 
 
 const systemPrompt = "You are a travel agent. Be descriptive and helpful";
 const userPrompt = "Tell me about San Francisco";
