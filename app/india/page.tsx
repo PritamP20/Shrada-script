@@ -4,6 +4,7 @@ import { GoogleGenAI } from "@google/genai";
 import React, { useState, useEffect } from "react";
 // @ts-ignore
 import India from "@svg-maps/india";
+import { MapPin, Users, Globe, Languages, Clock, Palette, Sparkles } from "lucide-react";
 
 interface Location {
   id: string;
@@ -22,15 +23,8 @@ interface StateData {
   highlights: { name: string; image: string }[];
 }
 
-// ===============================
-// Gemini API Key
-// ===============================
 const GEMINI_API_KEY = "AIzaSyCzOAdVfUSllbeQlWmaEKSqXoHwKeIc2kk";
-
-// Initialize the GoogleGenAI client
 const ai = new GoogleGenAI({ apiKey: GEMINI_API_KEY });
-
-// Cache for generated data
 const generatedDataCache: Record<string, StateData> = {};
 
 async function generateStateData(state: string): Promise<StateData | null> {
@@ -121,138 +115,194 @@ export default function Page() {
   }, [selected]);
 
   return (
-    <div className="flex items-start justify-between min-h-screen bg-[#FFF8E1] gap-6 p-6">
-      {/* LEFT - State History */}
-      <div className="flex-1 bg-[#FFFFFF] rounded-2xl shadow-lg p-6 max-h-[90vh] overflow-y-auto border-l-4 border-[#FF6F00]">
-        {loading ? (
-          <div className="flex items-center justify-center h-full text-center">
-            <div className="animate-spin rounded-full h-16 w-16 border-b-4 border-[#FF6F00] mx-auto mb-4"></div>
-            <p className="text-[#212121]">Generating information...</p>
-          </div>
-        ) : error ? (
-          <div className="flex items-center justify-center h-full text-center">
-            <div>
-              <div className="text-6xl mb-4 text-[#C62828]">⚠️</div>
-              <p className="text-[#C62828] font-semibold mb-2">Error Loading Data</p>
-              <p className="text-[#616161] text-sm">{error}</p>
-            </div>
-          </div>
-        ) : selectedData ? (
-          <>
-            <h2 className="text-3xl font-bold mb-4 text-[#FF6F00]">{selected}</h2>
-            <div className="space-y-3 mb-4">
-              <p className="text-[#212121]">
-                <span className="font-semibold text-[#1976D2]">Capital:</span> {selectedData.capital}
-              </p>
-              <p className="text-[#212121]">
-                <span className="font-semibold text-[#1976D2]">Population:</span> {selectedData.population}
-              </p>
-              <p className="text-[#212121]">
-                <span className="font-semibold text-[#1976D2]">Area:</span> {selectedData.area}
-              </p>
-              <p className="text-[#212121]">
-                <span className="font-semibold text-[#1976D2]">Languages:</span> {selectedData.languages}
-              </p>
-            </div>
-            <div className="border-t border-[#1976D2] pt-4">
-              <h3 className="text-xl font-semibold mb-3 text-[#C62828] flex items-center">
-                <span className="mr-2">📜</span> Historical Background
-              </h3>
-              <p className="text-[#212121] leading-relaxed text-justify">{selectedData.history}</p>
-            </div>
-          </>
-        ) : (
-          <div className="flex items-center justify-center h-full text-[#616161]">
-            <div className="text-center">
-              <span className="text-6xl mb-4 block">🏛️</span>
-              <p className="text-lg">Select a state to explore its history</p>
-            </div>
-          </div>
-        )}
-      </div>
+    <div className="min-h-screen bg-neutral-50 dark:bg-neutral-950 p-8">
+      <div className="max-w-[1800px] mx-auto">
+        {/* Header */}
+        <div className="mb-12 text-center">
+          <h1 className="text-4xl font-bold text-neutral-900 dark:text-neutral-100 mb-3">
+            Explore India
+          </h1>
+          <p className="text-neutral-600 dark:text-neutral-400">
+            Click on any state to discover its heritage and culture
+          </p>
+        </div>
 
-      {/* CENTER - Map */}
-      <div className="flex flex-col items-center justify-center">
-        <svg
-          viewBox={viewBox}
-          xmlns="http://www.w3.org/2000/svg"
-          className="w-[600px] h-auto rounded-xl shadow-xl bg-[#FFFFFF] p-4 border-2 border-[#1976D2]"
-        >
-          {locations.map((loc) => (
-            <path
-              key={loc.id}
-              d={loc.path}
-              fill={selected === loc.name ? "#FF6F00" : "#E0E0E0"}
-              stroke="#212121"
-              strokeWidth={0.5}
-              className="cursor-pointer transition-all duration-200 hover:fill-[#F9A825]"
-              onClick={() => setSelected(loc.name)}
-            />
-          ))}
-        </svg>
-
-        {selected && (
-          <div className="mt-6 flex items-center gap-5">
-            <div className="px-6 py-3 bg-[#FF6F00] text-white text-lg rounded-full shadow-lg">
-              <span className="font-semibold">{selected}</span>
-            </div>
-            <div className="px-6 py-3 bg-[#1976D2] text-white text-lg rounded-full shadow-lg">
-              <span className="font-semibold">View In Detail</span>
-            </div>
-          </div>
-        )}
-      </div>
-
-      {/* RIGHT - Cultural Information */}
-      <div className="flex-1 bg-[#FFFFFF] rounded-2xl shadow-lg p-6 max-h-[90vh] overflow-y-auto border-r-4 border-[#FF6F00]">
-        {loading ? (
-          <div className="flex items-center justify-center h-full text-center">
-            <div className="animate-spin rounded-full h-16 w-16 border-b-4 border-[#388E3C] mx-auto mb-4"></div>
-            <p className="text-[#212121]">Loading cultural insights...</p>
-          </div>
-        ) : selectedData ? (
-          <>
-            <div className="mb-6">
-              <img
-                src={selectedData.mainImage}
-                alt={selected}
-                className="w-full h-64 object-cover rounded-xl shadow-md border-2 border-[#1976D2]"
-              />
-            </div>
-
-            <div className="border-b border-[#1976D2] pb-4 mb-4">
-              <h3 className="text-xl font-semibold mb-3 text-[#388E3C] flex items-center">
-                <span className="mr-2">🎨</span> Cultural Heritage
-              </h3>
-              <p className="text-[#212121] leading-relaxed text-justify">{selectedData.culture}</p>
-            </div>
-
-            <div>
-              <h4 className="text-lg font-semibold mb-3 text-[#C62828] flex items-center">
-                <span className="mr-2">✨</span> Cultural Highlights
-              </h4>
-              <div className="grid grid-cols-2 gap-3">
-                {selectedData.highlights.map((highlight, idx) => (
-                  <div key={idx} className="text-center bg-[#FFF8E1] rounded-lg p-3 border border-[#1976D2]">
-                    <img
-                      src={highlight.image}
-                      alt={highlight.name}
-                      className="w-full h-28 object-cover rounded-lg shadow-sm mb-2 border-2 border-[#FF6F00]"
-                    />
-                    <p className="text-sm font-medium text-[#212121]">{highlight.name}</p>
+        {/* Main Grid Layout */}
+        <div className="grid lg:grid-cols-12 gap-6">
+          {/* Left Panel - History */}
+          <div className="lg:col-span-4 bg-white dark:bg-neutral-900 rounded-2xl border border-neutral-200 dark:border-neutral-800 overflow-hidden">
+            <div className="h-[calc(100vh-200px)] overflow-y-auto">
+              {loading ? (
+                <div className="flex flex-col items-center justify-center h-full p-8">
+                  <div className="w-12 h-12 mb-6 relative">
+                    <div className="absolute inset-0 rounded-full border-2 border-neutral-200 dark:border-neutral-800"></div>
+                    <div className="absolute inset-0 rounded-full border-t-2 border-orange-500 animate-spin"></div>
                   </div>
-                ))}
-              </div>
-            </div>
-          </>
-        ) : (
-          <div className="flex items-center justify-center h-full text-[#616161]">
-            <div className="text-center">
-              <span className="text-6xl mb-4 block">🎭</span>
-              <p className="text-lg">Select a state to discover its culture</p>
+                  <p className="text-neutral-600 dark:text-neutral-400 text-sm">Loading history...</p>
+                </div>
+              ) : error ? (
+                <div className="flex flex-col items-center justify-center h-full p-8 text-center">
+                  <div className="w-16 h-16 rounded-full bg-red-50 dark:bg-red-950/20 flex items-center justify-center mb-4">
+                    <span className="text-2xl">⚠️</span>
+                  </div>
+                  <p className="text-red-600 dark:text-red-400 font-medium mb-2">Failed to Load</p>
+                  <p className="text-neutral-500 dark:text-neutral-500 text-sm">{error}</p>
+                </div>
+              ) : selectedData ? (
+                <div className="p-8">
+                  <h2 className="text-2xl font-bold text-neutral-900 dark:text-neutral-100 mb-6">{selected}</h2>
+                  
+                  {/* Quick Stats */}
+                  <div className="space-y-3 mb-8 pb-8 border-b border-neutral-200 dark:border-neutral-800">
+                    <div className="flex items-center gap-3">
+                      <MapPin className="w-4 h-4 text-neutral-400" />
+                      <span className="text-sm text-neutral-600 dark:text-neutral-400">Capital:</span>
+                      <span className="text-sm font-medium text-neutral-900 dark:text-neutral-100">{selectedData.capital}</span>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <Users className="w-4 h-4 text-neutral-400" />
+                      <span className="text-sm text-neutral-600 dark:text-neutral-400">Population:</span>
+                      <span className="text-sm font-medium text-neutral-900 dark:text-neutral-100">{selectedData.population}</span>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <Globe className="w-4 h-4 text-neutral-400" />
+                      <span className="text-sm text-neutral-600 dark:text-neutral-400">Area:</span>
+                      <span className="text-sm font-medium text-neutral-900 dark:text-neutral-100">{selectedData.area}</span>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <Languages className="w-4 h-4 text-neutral-400" />
+                      <span className="text-sm text-neutral-600 dark:text-neutral-400">Languages:</span>
+                      <span className="text-sm font-medium text-neutral-900 dark:text-neutral-100">{selectedData.languages}</span>
+                    </div>
+                  </div>
+
+                  {/* History Section */}
+                  <div>
+                    <div className="flex items-center gap-2 mb-4">
+                      <Clock className="w-5 h-5 text-orange-500" />
+                      <h3 className="text-lg font-semibold text-neutral-900 dark:text-neutral-100">History</h3>
+                    </div>
+                    <p className="text-neutral-700 dark:text-neutral-300 leading-relaxed text-sm">
+                      {selectedData.history}
+                    </p>
+                  </div>
+                </div>
+              ) : (
+                <div className="flex flex-col items-center justify-center h-full p-8 text-center">
+                  <div className="w-16 h-16 rounded-full bg-neutral-100 dark:bg-neutral-800 flex items-center justify-center mb-4">
+                    <Clock className="w-8 h-8 text-neutral-400" />
+                  </div>
+                  <p className="text-neutral-600 dark:text-neutral-400">Select a state to view its history</p>
+                </div>
+              )}
             </div>
           </div>
-        )}
+
+          {/* Center Panel - Map */}
+          <div className="lg:col-span-4 flex flex-col items-center justify-center">
+            <div className="bg-white dark:bg-neutral-900 rounded-2xl border border-neutral-200 dark:border-neutral-800 p-6">
+              <svg
+                viewBox={viewBox}
+                xmlns="http://www.w3.org/2000/svg"
+                className="w-full h-auto max-w-[500px]"
+              >
+                {locations.map((loc) => (
+                  <path
+                    key={loc.id}
+                    d={loc.path}
+                    fill={selected === loc.name ? "#f97316" : "#e5e5e5"}
+                    stroke="#525252"
+                    strokeWidth={0.3}
+                    className="cursor-pointer transition-all duration-200 hover:fill-orange-400 dark:hover:fill-orange-500"
+                    style={{
+                      filter: selected === loc.name ? "drop-shadow(0 4px 6px rgba(249, 115, 22, 0.3))" : "none"
+                    }}
+                    onClick={() => setSelected(loc.name)}
+                  />
+                ))}
+              </svg>
+            </div>
+
+            {selected && (
+              <div className="mt-6 inline-flex items-center gap-2 px-4 py-2 bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-full">
+                <MapPin className="w-4 h-4 text-orange-500" />
+                <span className="text-sm font-medium text-neutral-900 dark:text-neutral-100">{selected}</span>
+              </div>
+            )}
+          </div>
+
+          {/* Right Panel - Culture */}
+          <div className="lg:col-span-4 bg-white dark:bg-neutral-900 rounded-2xl border border-neutral-200 dark:border-neutral-800 overflow-hidden">
+            <div className="h-[calc(100vh-200px)] overflow-y-auto">
+              {loading ? (
+                <div className="flex flex-col items-center justify-center h-full p-8">
+                  <div className="w-12 h-12 mb-6 relative">
+                    <div className="absolute inset-0 rounded-full border-2 border-neutral-200 dark:border-neutral-800"></div>
+                    <div className="absolute inset-0 rounded-full border-t-2 border-orange-500 animate-spin"></div>
+                  </div>
+                  <p className="text-neutral-600 dark:text-neutral-400 text-sm">Loading culture...</p>
+                </div>
+              ) : selectedData ? (
+                <div className="p-8">
+                  {/* Main Image */}
+                  <div className="mb-6 rounded-xl overflow-hidden">
+                    <img
+                      src={selectedData.mainImage}
+                      alt={selected}
+                      className="w-full h-48 object-cover"
+                    />
+                  </div>
+
+                  {/* Culture Section */}
+                  <div className="mb-8 pb-8 border-b border-neutral-200 dark:border-neutral-800">
+                    <div className="flex items-center gap-2 mb-4">
+                      <Palette className="w-5 h-5 text-orange-500" />
+                      <h3 className="text-lg font-semibold text-neutral-900 dark:text-neutral-100">Culture</h3>
+                    </div>
+                    <p className="text-neutral-700 dark:text-neutral-300 leading-relaxed text-sm">
+                      {selectedData.culture}
+                    </p>
+                  </div>
+
+                  {/* Highlights */}
+                  <div>
+                    <div className="flex items-center gap-2 mb-4">
+                      <Sparkles className="w-5 h-5 text-orange-500" />
+                      <h3 className="text-lg font-semibold text-neutral-900 dark:text-neutral-100">Highlights</h3>
+                    </div>
+                    <div className="grid grid-cols-2 gap-3">
+                      {selectedData.highlights.map((highlight, idx) => (
+                        <div key={idx} className="group">
+                          <div className="bg-neutral-50 dark:bg-neutral-950 rounded-lg overflow-hidden border border-neutral-200 dark:border-neutral-800">
+                            <div className="relative overflow-hidden aspect-video">
+                              <img
+                                src={highlight.image}
+                                alt={highlight.name}
+                                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                              />
+                            </div>
+                            <div className="p-3">
+                              <p className="text-xs font-medium text-neutral-900 dark:text-neutral-100 leading-snug">
+                                {highlight.name}
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                <div className="flex flex-col items-center justify-center h-full p-8 text-center">
+                  <div className="w-16 h-16 rounded-full bg-neutral-100 dark:bg-neutral-800 flex items-center justify-center mb-4">
+                    <Palette className="w-8 h-8 text-neutral-400" />
+                  </div>
+                  <p className="text-neutral-600 dark:text-neutral-400">Select a state to discover its culture</p>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );

@@ -3,7 +3,7 @@
 import { GoogleGenAI } from "@google/genai";
 import React, { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
-import { Upload, Sparkles, FileText, Video, ArrowLeft, MapPin, Users, Globe, Languages, Clock, Download, Copy, Check } from "lucide-react";
+import { Upload, Sparkles, FileText, Video, ArrowLeft, MapPin, Users, Globe, Languages, Clock, Download, Copy, Check, Palette, Mountain } from "lucide-react";
 
 interface StateData {
   capital: string;
@@ -20,10 +20,10 @@ const GEMINI_API_KEY = "AIzaSyCzOAdVfUSllbeQlWmaEKSqXoHwKeIc2kk";
 const ai = new GoogleGenAI({ apiKey: GEMINI_API_KEY });
 
 const VIDEO_PROMPTS = [
-  "Create a cinematic 2-minute cultural tour",
-  "Generate a historical documentary script",
-  "Develop a food & festival showcase",
-  "Design a tourist destination guide",
+  "Cinematic 2-min cultural tour",
+  "Historical documentary script",
+  "Food & festival showcase",
+  "Tourist destination guide",
 ];
 
 export default function StateDetailPage() {
@@ -180,13 +180,13 @@ Provide the response in this format:
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50 to-red-50 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950 flex items-center justify-center">
-        <div className="text-center">
-          <div className="relative">
-            <div className="animate-spin rounded-full h-24 w-24 border-4 border-orange-200 dark:border-gray-700"></div>
-            <div className="animate-spin rounded-full h-24 w-24 border-t-4 border-orange-600 dark:border-orange-500 absolute top-0"></div>
+      <div className="min-h-screen bg-neutral-50 dark:bg-neutral-950 flex items-center justify-center p-6">
+        <div className="text-center space-y-6">
+          <div className="relative w-16 h-16 mx-auto">
+            <div className="absolute inset-0 rounded-full border-2 border-neutral-200 dark:border-neutral-800"></div>
+            <div className="absolute inset-0 rounded-full border-t-2 border-orange-500 animate-spin"></div>
           </div>
-          <p className="mt-6 text-gray-700 dark:text-gray-300 text-lg font-medium">Loading state information...</p>
+          <p className="text-neutral-600 dark:text-neutral-400 font-medium">Loading {stateName}...</p>
         </div>
       </div>
     );
@@ -194,16 +194,18 @@ Provide the response in this format:
 
   if (error || !stateData) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50 to-red-50 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950 flex items-center justify-center">
-        <div className="text-center bg-white dark:bg-gray-800 p-12 rounded-3xl shadow-2xl max-w-md">
-          <div className="text-7xl mb-6">⚠️</div>
-          <h2 className="text-2xl font-bold text-red-600 dark:text-red-400 mb-3">Unable to Load State</h2>
-          <p className="text-gray-600 dark:text-gray-400 mb-6">{error || "An unexpected error occurred"}</p>
+      <div className="min-h-screen bg-neutral-50 dark:bg-neutral-950 flex items-center justify-center p-6">
+        <div className="text-center max-w-md">
+          <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-red-50 dark:bg-red-950/20 flex items-center justify-center">
+            <span className="text-4xl">⚠️</span>
+          </div>
+          <h2 className="text-2xl font-bold text-neutral-900 dark:text-neutral-100 mb-3">Unable to Load</h2>
+          <p className="text-neutral-600 dark:text-neutral-400 mb-8">{error || "Something went wrong"}</p>
           <button
             onClick={() => router.back()}
-            className="px-8 py-3 bg-gradient-to-r from-orange-600 to-red-600 text-white rounded-xl font-semibold hover:shadow-lg transform hover:-translate-y-0.5 transition-all"
+            className="px-6 py-3 bg-neutral-900 dark:bg-neutral-100 text-white dark:text-neutral-900 rounded-lg font-medium hover:opacity-90 transition-opacity"
           >
-            Return to Map
+            Go Back
           </button>
         </div>
       </div>
@@ -211,162 +213,168 @@ Provide the response in this format:
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50 to-red-50 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950">
-      {/* Navigation Header */}
-      <div className="sticky top-0 z-50 bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl border-b border-gray-200 dark:border-gray-800">
-        <div className="container mx-auto px-6 py-4 flex items-center justify-between">
+    <div className="min-h-screen bg-neutral-50 dark:bg-neutral-950">
+      {/* Minimal Header */}
+      <header className="sticky top-0 z-50 bg-white/80 dark:bg-neutral-900/80 backdrop-blur-xl border-b border-neutral-200 dark:border-neutral-800">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8 py-4 flex items-center justify-between">
           <button
             onClick={() => router.back()}
-            className="flex items-center gap-2 px-5 py-2.5 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 rounded-xl shadow-md hover:shadow-xl transition-all border border-gray-200 dark:border-gray-700 group"
+            className="flex items-center gap-2 text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors"
           >
-            <ArrowLeft className="w-5 h-5 group-hover:-translate-x-1 transition-transform" />
+            <ArrowLeft className="w-5 h-5" />
             <span className="font-medium">Back</span>
           </button>
-          <div className="flex items-center gap-3">
-            <MapPin className="w-5 h-5 text-orange-600 dark:text-orange-500" />
-            <span className="text-xl font-bold bg-gradient-to-r from-orange-600 to-red-600 bg-clip-text text-transparent">
-              {stateName}
-            </span>
+          <div className="flex items-center gap-2 text-sm text-neutral-500 dark:text-neutral-500">
+            <MapPin className="w-4 h-4" />
+            <span>{stateName}</span>
           </div>
         </div>
-      </div>
+      </header>
 
-      {/* Hero Section */}
-      <div className="container mx-auto px-6 pt-8 pb-12">
-        <div className="bg-white dark:bg-gray-900 rounded-3xl shadow-2xl overflow-hidden border border-gray-200 dark:border-gray-800">
-          <div className="relative">
-            <img
-              src={stateData.mainImage}
-              alt={stateName}
-              className="w-full h-[500px] object-cover"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
-            <div className="absolute bottom-0 left-0 right-0 p-10">
-              <h1 className="text-6xl font-black text-white mb-4 drop-shadow-2xl tracking-tight">{stateName}</h1>
-              <p className="text-xl text-white/90 font-light">Discover the heritage, culture, and essence</p>
+      {/* Hero with Organic Layout */}
+      <section className="max-w-7xl mx-auto px-6 lg:px-8 pt-12 pb-20">
+        <div className="grid lg:grid-cols-12 gap-8 items-start">
+          {/* Left: Image */}
+          <div className="lg:col-span-7">
+            <div className="relative group">
+              <div className="absolute -inset-4 bg-gradient-to-br from-orange-500/20 to-red-500/20 rounded-3xl blur-2xl group-hover:blur-3xl transition-all duration-500 opacity-0 group-hover:opacity-100"></div>
+              <img
+                src={stateData.mainImage}
+                alt={stateName}
+                className="relative w-full aspect-[4/3] object-cover rounded-2xl shadow-2xl"
+              />
             </div>
           </div>
 
-          <div className="p-10">
-            {/* Stats Grid */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-12">
-              <div className="bg-gradient-to-br from-orange-50 to-red-50 dark:from-gray-800 dark:to-gray-800 p-6 rounded-2xl border border-orange-200 dark:border-gray-700 hover:shadow-lg transition-shadow">
-                <div className="flex items-center gap-3 mb-2">
-                  <MapPin className="w-5 h-5 text-orange-600 dark:text-orange-500" />
-                  <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Capital City</p>
-                </div>
-                <p className="text-2xl font-bold text-gray-900 dark:text-white">{stateData.capital}</p>
-              </div>
-
-              <div className="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-gray-800 dark:to-gray-800 p-6 rounded-2xl border border-blue-200 dark:border-gray-700 hover:shadow-lg transition-shadow">
-                <div className="flex items-center gap-3 mb-2">
-                  <Users className="w-5 h-5 text-blue-600 dark:text-blue-500" />
-                  <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Population</p>
-                </div>
-                <p className="text-2xl font-bold text-gray-900 dark:text-white">{stateData.population}</p>
-              </div>
-
-              <div className="bg-gradient-to-br from-green-50 to-emerald-50 dark:from-gray-800 dark:to-gray-800 p-6 rounded-2xl border border-green-200 dark:border-gray-700 hover:shadow-lg transition-shadow">
-                <div className="flex items-center gap-3 mb-2">
-                  <Globe className="w-5 h-5 text-green-600 dark:text-green-500" />
-                  <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Total Area</p>
-                </div>
-                <p className="text-2xl font-bold text-gray-900 dark:text-white">{stateData.area}</p>
-              </div>
-
-              <div className="bg-gradient-to-br from-purple-50 to-pink-50 dark:from-gray-800 dark:to-gray-800 p-6 rounded-2xl border border-purple-200 dark:border-gray-700 hover:shadow-lg transition-shadow">
-                <div className="flex items-center gap-3 mb-2">
-                  <Languages className="w-5 h-5 text-purple-600 dark:text-purple-500" />
-                  <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Languages</p>
-                </div>
-                <p className="text-2xl font-bold text-gray-900 dark:text-white">{stateData.languages}</p>
-              </div>
-            </div>
-
-            {/* History & Culture */}
-            <div className="grid md:grid-cols-2 gap-8 mb-12">
-              <div className="group">
-                <div className="bg-gradient-to-br from-amber-50 to-orange-50 dark:from-gray-800 dark:to-gray-800 p-8 rounded-2xl border-l-4 border-orange-600 dark:border-orange-500 hover:shadow-xl transition-all">
-                  <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4 flex items-center gap-3">
-                    <Clock className="w-8 h-8 text-orange-600 dark:text-orange-500" />
-                    Historical Background
-                  </h2>
-                  <p className="text-gray-700 dark:text-gray-300 leading-relaxed text-lg">{stateData.history}</p>
-                </div>
-              </div>
-
-              <div className="group">
-                <div className="bg-gradient-to-br from-rose-50 to-red-50 dark:from-gray-800 dark:to-gray-800 p-8 rounded-2xl border-l-4 border-red-600 dark:border-red-500 hover:shadow-xl transition-all">
-                  <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4 flex items-center gap-3">
-                    <Sparkles className="w-8 h-8 text-red-600 dark:text-red-500" />
-                    Cultural Heritage
-                  </h2>
-                  <p className="text-gray-700 dark:text-gray-300 leading-relaxed text-lg">{stateData.culture}</p>
-                </div>
-              </div>
-            </div>
-
-            {/* Cultural Highlights */}
+          {/* Right: Title & Stats */}
+          <div className="lg:col-span-5 space-y-8">
             <div>
-              <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-8 flex items-center gap-3">
-                <Sparkles className="w-8 h-8 text-orange-600 dark:text-orange-500" />
-                Cultural Highlights
-              </h2>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-                {stateData.highlights.map((highlight, idx) => (
-                  <div key={idx} className="group cursor-pointer">
-                    <div className="bg-white dark:bg-gray-800 rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all transform hover:-translate-y-2 border border-gray-200 dark:border-gray-700">
-                      <div className="relative overflow-hidden">
-                        <img 
-                          src={highlight.image} 
-                          alt={highlight.name} 
-                          className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-500" 
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                      </div>
-                      <div className="p-4">
-                        <p className="text-center font-semibold text-gray-900 dark:text-white text-sm">{highlight.name}</p>
-                      </div>
-                    </div>
-                  </div>
-                ))}
+              <h1 className="text-5xl lg:text-6xl font-bold text-neutral-900 dark:text-neutral-100 mb-4 tracking-tight">
+                {stateName}
+              </h1>
+              <p className="text-lg text-neutral-600 dark:text-neutral-400">
+                A journey through heritage and culture
+              </p>
+            </div>
+
+            {/* Stats as simple cards */}
+            <div className="grid grid-cols-2 gap-4">
+              <div className="bg-white dark:bg-neutral-900 p-5 rounded-xl border border-neutral-200 dark:border-neutral-800">
+                <div className="flex items-center gap-2 text-neutral-500 dark:text-neutral-500 text-xs font-medium uppercase tracking-wide mb-2">
+                  <MapPin className="w-3.5 h-3.5" />
+                  Capital
+                </div>
+                <p className="text-xl font-semibold text-neutral-900 dark:text-neutral-100">{stateData.capital}</p>
+              </div>
+
+              <div className="bg-white dark:bg-neutral-900 p-5 rounded-xl border border-neutral-200 dark:border-neutral-800">
+                <div className="flex items-center gap-2 text-neutral-500 dark:text-neutral-500 text-xs font-medium uppercase tracking-wide mb-2">
+                  <Users className="w-3.5 h-3.5" />
+                  Population
+                </div>
+                <p className="text-xl font-semibold text-neutral-900 dark:text-neutral-100">{stateData.population}</p>
+              </div>
+
+              <div className="bg-white dark:bg-neutral-900 p-5 rounded-xl border border-neutral-200 dark:border-neutral-800">
+                <div className="flex items-center gap-2 text-neutral-500 dark:text-neutral-500 text-xs font-medium uppercase tracking-wide mb-2">
+                  <Globe className="w-3.5 h-3.5" />
+                  Area
+                </div>
+                <p className="text-xl font-semibold text-neutral-900 dark:text-neutral-100">{stateData.area}</p>
+              </div>
+
+              <div className="bg-white dark:bg-neutral-900 p-5 rounded-xl border border-neutral-200 dark:border-neutral-800">
+                <div className="flex items-center gap-2 text-neutral-500 dark:text-neutral-500 text-xs font-medium uppercase tracking-wide mb-2">
+                  <Languages className="w-3.5 h-3.5" />
+                  Languages
+                </div>
+                <p className="text-xl font-semibold text-neutral-900 dark:text-neutral-100">{stateData.languages}</p>
               </div>
             </div>
           </div>
         </div>
-      </div>
+      </section>
 
-      {/* Video Script Generator */}
-      <div className="container mx-auto px-6 pb-12">
-        <div className="bg-white dark:bg-gray-900 rounded-3xl shadow-2xl overflow-hidden border border-gray-200 dark:border-gray-800">
-          <div className="bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-700 dark:to-indigo-700 p-8">
-            <h2 className="text-4xl font-bold text-white flex items-center gap-4">
-              <Video className="w-10 h-10" />
-              AI Video Script Generator
-            </h2>
-            <p className="text-blue-100 mt-2 text-lg">Create professional video scripts powered by AI</p>
+      {/* History & Culture - Side by Side */}
+      <section className="max-w-7xl mx-auto px-6 lg:px-8 pb-20">
+        <div className="grid md:grid-cols-2 gap-8">
+          <article className="bg-white dark:bg-neutral-900 p-8 rounded-2xl border border-neutral-200 dark:border-neutral-800">
+            <div className="flex items-center gap-3 mb-5">
+              <div className="w-10 h-10 rounded-full bg-orange-100 dark:bg-orange-950/30 flex items-center justify-center">
+                <Clock className="w-5 h-5 text-orange-600 dark:text-orange-500" />
+              </div>
+              <h2 className="text-2xl font-bold text-neutral-900 dark:text-neutral-100">History</h2>
+            </div>
+            <p className="text-neutral-700 dark:text-neutral-300 leading-relaxed">{stateData.history}</p>
+          </article>
+
+          <article className="bg-white dark:bg-neutral-900 p-8 rounded-2xl border border-neutral-200 dark:border-neutral-800">
+            <div className="flex items-center gap-3 mb-5">
+              <div className="w-10 h-10 rounded-full bg-red-100 dark:bg-red-950/30 flex items-center justify-center">
+                <Palette className="w-5 h-5 text-red-600 dark:text-red-500" />
+              </div>
+              <h2 className="text-2xl font-bold text-neutral-900 dark:text-neutral-100">Culture</h2>
+            </div>
+            <p className="text-neutral-700 dark:text-neutral-300 leading-relaxed">{stateData.culture}</p>
+          </article>
+        </div>
+      </section>
+
+      {/* Highlights - Bento Style */}
+      <section className="max-w-7xl mx-auto px-6 lg:px-8 pb-20">
+        <h2 className="text-3xl font-bold text-neutral-900 dark:text-neutral-100 mb-8">Highlights</h2>
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+          {stateData.highlights.map((highlight, idx) => (
+            <div key={idx} className="group relative overflow-hidden rounded-xl aspect-square">
+              <img 
+                src={highlight.image} 
+                alt={highlight.name} 
+                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" 
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+              <div className="absolute bottom-0 left-0 right-0 p-4">
+                <p className="text-white font-semibold text-sm">{highlight.name}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Video Script Generator - Clean Design */}
+      <section className="max-w-7xl mx-auto px-6 lg:px-8 pb-20">
+        <div className="bg-white dark:bg-neutral-900 rounded-2xl border border-neutral-200 dark:border-neutral-800 overflow-hidden">
+          <div className="p-8 border-b border-neutral-200 dark:border-neutral-800">
+            <div className="flex items-center gap-3 mb-2">
+              <div className="w-10 h-10 rounded-full bg-blue-100 dark:bg-blue-950/30 flex items-center justify-center">
+                <Video className="w-5 h-5 text-blue-600 dark:text-blue-500" />
+              </div>
+              <h2 className="text-2xl font-bold text-neutral-900 dark:text-neutral-100">Video Script Generator</h2>
+            </div>
+            <p className="text-neutral-600 dark:text-neutral-400">AI-powered script creation for {stateName}</p>
           </div>
 
-          <div className="p-10">
-            <label className="block text-gray-900 dark:text-white font-semibold mb-4 text-lg">
-              Describe your video concept
-            </label>
-            <textarea
-              value={videoPrompt}
-              onChange={(e) => setVideoPrompt(e.target.value)}
-              placeholder="E.g., Create a 3-minute video showcasing the temples and spiritual heritage of the state..."
-              className="w-full p-6 border-2 border-gray-300 dark:border-gray-700 rounded-2xl focus:outline-none focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500 dark:focus:border-blue-400 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white transition-all text-lg"
-              rows={5}
-            />
+          <div className="p-8 space-y-6">
+            <div>
+              <label className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-3">
+                Describe your video
+              </label>
+              <textarea
+                value={videoPrompt}
+                onChange={(e) => setVideoPrompt(e.target.value)}
+                placeholder="Create a video showcasing the temples and spiritual sites..."
+                className="w-full px-4 py-3 border border-neutral-300 dark:border-neutral-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-neutral-950 text-neutral-900 dark:text-neutral-100 resize-none"
+                rows={4}
+              />
+            </div>
 
-            <div className="mt-6 mb-8">
-              <p className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-3">Quick Templates:</p>
-              <div className="flex flex-wrap gap-3">
+            <div>
+              <p className="text-xs font-medium text-neutral-500 dark:text-neutral-500 uppercase tracking-wide mb-3">Quick starts</p>
+              <div className="flex flex-wrap gap-2">
                 {VIDEO_PROMPTS.map((prompt, idx) => (
                   <button
                     key={idx}
                     onClick={() => setVideoPrompt(prompt)}
-                    className="px-5 py-2.5 bg-gradient-to-r from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-700 text-gray-700 dark:text-gray-200 rounded-xl font-medium hover:shadow-lg hover:scale-105 transition-all border border-gray-300 dark:border-gray-600"
+                    className="px-3 py-1.5 text-sm bg-neutral-100 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 rounded-md hover:bg-neutral-200 dark:hover:bg-neutral-700 transition-colors"
                   >
                     {prompt}
                   </button>
@@ -377,120 +385,118 @@ Provide the response in this format:
             <button
               onClick={generateVideoScript}
               disabled={!videoPrompt.trim() || videoLoading}
-              className="w-full py-5 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-2xl font-bold text-xl hover:shadow-2xl transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3 hover:scale-[1.02]"
+              className="w-full py-3 bg-neutral-900 dark:bg-neutral-100 text-white dark:text-neutral-900 rounded-lg font-medium hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
             >
               {videoLoading ? (
                 <>
-                  <div className="animate-spin rounded-full h-6 w-6 border-2 border-white border-t-transparent"></div>
-                  Generating Script...
+                  <div className="w-4 h-4 border-2 border-white/30 border-t-white dark:border-neutral-900/30 dark:border-t-neutral-900 rounded-full animate-spin"></div>
+                  Generating...
                 </>
               ) : (
                 <>
-                  <Sparkles className="w-6 h-6" />
-                  Generate Video Script
+                  <Sparkles className="w-4 h-4" />
+                  Generate Script
                 </>
               )}
             </button>
 
             {videoScript && (
-              <div className="mt-8 bg-gradient-to-br from-green-50 to-emerald-50 dark:from-gray-800 dark:to-gray-800 rounded-2xl border-2 border-green-300 dark:border-green-700 overflow-hidden">
-                <div className="bg-gradient-to-r from-green-600 to-emerald-600 dark:from-green-700 dark:to-emerald-700 p-6 flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <FileText className="w-6 h-6 text-white" />
-                    <h3 className="text-2xl font-bold text-white">Generated Script</h3>
+              <div className="mt-6 bg-neutral-50 dark:bg-neutral-950 rounded-xl border border-neutral-200 dark:border-neutral-800 overflow-hidden">
+                <div className="px-6 py-4 border-b border-neutral-200 dark:border-neutral-800 flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <FileText className="w-4 h-4 text-neutral-600 dark:text-neutral-400" />
+                    <span className="font-medium text-neutral-900 dark:text-neutral-100">Your Script</span>
                   </div>
                   <button
                     onClick={() => copyToClipboard(videoScript)}
-                    className="px-4 py-2 bg-white/20 hover:bg-white/30 text-white rounded-lg flex items-center gap-2 transition-all"
+                    className="flex items-center gap-2 px-3 py-1.5 text-sm text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors"
                   >
-                    {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
-                    {copied ? "Copied!" : "Copy"}
+                    {copied ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
+                    {copied ? "Copied" : "Copy"}
                   </button>
                 </div>
-                <div className="p-8">
-                  <pre className="whitespace-pre-wrap text-gray-800 dark:text-gray-200 font-sans leading-relaxed text-base">{videoScript}</pre>
+                <div className="p-6">
+                  <pre className="whitespace-pre-wrap text-sm text-neutral-700 dark:text-neutral-300 font-mono leading-relaxed">{videoScript}</pre>
                 </div>
               </div>
             )}
           </div>
         </div>
-      </div>
+      </section>
 
       {/* Script Decoder */}
-      <div className="container mx-auto px-6 pb-12">
-        <div className="bg-white dark:bg-gray-900 rounded-3xl shadow-2xl overflow-hidden border border-gray-200 dark:border-gray-800">
-          <div className="bg-gradient-to-r from-purple-600 to-pink-600 dark:from-purple-700 dark:to-pink-700 p-8">
-            <h2 className="text-4xl font-bold text-white flex items-center gap-4">
-              <FileText className="w-10 h-10" />
-              Script Decoder & Translator
-            </h2>
-            <p className="text-purple-100 mt-2 text-lg">Translate regional scripts to English instantly</p>
+      <section className="max-w-7xl mx-auto px-6 lg:px-8 pb-20">
+        <div className="bg-white dark:bg-neutral-900 rounded-2xl border border-neutral-200 dark:border-neutral-800 overflow-hidden">
+          <div className="p-8 border-b border-neutral-200 dark:border-neutral-800">
+            <div className="flex items-center gap-3 mb-2">
+              <div className="w-10 h-10 rounded-full bg-purple-100 dark:bg-purple-950/30 flex items-center justify-center">
+                <FileText className="w-5 h-5 text-purple-600 dark:text-purple-500" />
+              </div>
+              <h2 className="text-2xl font-bold text-neutral-900 dark:text-neutral-100">Script Translator</h2>
+            </div>
+            <p className="text-neutral-600 dark:text-neutral-400">Translate regional scripts to English</p>
           </div>
 
-          <div className="p-10">
-            <div className="mb-8">
-              <label className="block w-full">
-                <div className={`border-4 border-dashed rounded-2xl p-16 text-center cursor-pointer transition-all ${
-                  uploadedFile 
-                    ? 'border-green-400 dark:border-green-600 bg-green-50 dark:bg-gray-800' 
-                    : 'border-gray-300 dark:border-gray-700 hover:border-purple-400 dark:hover:border-purple-600 hover:bg-purple-50 dark:hover:bg-gray-800'
-                }`}>
-                  <Upload className={`w-20 h-20 mx-auto mb-6 ${uploadedFile ? 'text-green-600 dark:text-green-500' : 'text-purple-600 dark:text-purple-500'}`} />
-                  <p className="text-gray-900 dark:text-white font-bold text-xl mb-2">
-                    {uploadedFile ? `✓ ${uploadedFile.name}` : "Drop your document here"}
-                  </p>
-                  <p className="text-gray-600 dark:text-gray-400 text-base">
-                    or click to browse • Supports TXT, DOC, DOCX files
-                  </p>
-                  <input
-                    type="file"
-                    accept=".txt,.doc,.docx"
-                    onChange={handleFileUpload}
-                    className="hidden"
-                  />
-                </div>
-              </label>
-            </div>
+          <div className="p-8 space-y-6">
+            <label className="block">
+              <div className={`border-2 border-dashed rounded-xl p-12 text-center cursor-pointer transition-all ${
+                uploadedFile 
+                  ? 'border-green-300 dark:border-green-800 bg-green-50 dark:bg-green-950/20' 
+                  : 'border-neutral-300 dark:border-neutral-700 hover:border-purple-400 dark:hover:border-purple-600 hover:bg-neutral-50 dark:hover:bg-neutral-950'
+              }`}>
+                <Upload className={`w-12 h-12 mx-auto mb-4 ${uploadedFile ? 'text-green-600 dark:text-green-500' : 'text-neutral-400'}`} />
+                <p className="text-neutral-900 dark:text-neutral-100 font-medium mb-1">
+                  {uploadedFile ? uploadedFile.name : "Drop your file here"}
+                </p>
+                <p className="text-sm text-neutral-500 dark:text-neutral-500">
+                  {uploadedFile ? "Ready to translate" : "TXT, DOC, DOCX supported"}
+                </p>
+                <input
+                  type="file"
+                  accept=".txt,.doc,.docx"
+                  onChange={handleFileUpload}
+                  className="hidden"
+                />
+              </div>
+            </label>
 
             <button
               onClick={decodeScript}
               disabled={!uploadedFile || decodeLoading}
-              className="w-full py-5 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-2xl font-bold text-xl hover:shadow-2xl transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3 hover:scale-[1.02]"
+              className="w-full py-3 bg-neutral-900 dark:bg-neutral-100 text-white dark:text-neutral-900 rounded-lg font-medium hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
             >
               {decodeLoading ? (
                 <>
-                  <div className="animate-spin rounded-full h-6 w-6 border-2 border-white border-t-transparent"></div>
-                  Decoding...
+                  <div className="w-4 h-4 border-2 border-white/30 border-t-white dark:border-neutral-900/30 dark:border-t-neutral-900 rounded-full animate-spin"></div>
+                  Translating...
                 </>
               ) : (
                 <>
-                  <Sparkles className="w-6 h-6" />
-                  Decode & Translate
+                  <Languages className="w-4 h-4" />
+                  Translate
                 </>
               )}
             </button>
 
             {decodedText && (
-              <div className="mt-8 bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-gray-800 dark:to-gray-800 rounded-2xl border-2 border-blue-300 dark:border-blue-700 overflow-hidden">
-                <div className="bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-700 dark:to-indigo-700 p-6 flex items-center justify-between">
-                  <h3 className="text-2xl font-bold text-white flex items-center gap-3">
-                    <Check className="w-6 h-6" />
-                    Translation Complete
-                  </h3>
+              <div className="mt-6 bg-neutral-50 dark:bg-neutral-950 rounded-xl border border-neutral-200 dark:border-neutral-800 overflow-hidden">
+                <div className="px-6 py-4 border-b border-neutral-200 dark:border-neutral-800 flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <Check className="w-4 h-4 text-green-600 dark:text-green-500" />
+                    <span className="font-medium text-neutral-900 dark:text-neutral-100">Translation</span>
+                  </div>
                   <button
                     onClick={() => copyToClipboard(decodedText)}
-                    className="px-4 py-2 bg-white/20 hover:bg-white/30 text-white rounded-lg flex items-center gap-2 transition-all"
+                    className="flex items-center gap-2 px-3 py-1.5 text-sm text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors"
                   >
-                    <Copy className="w-4 h-4" />
+                    <Copy className="w-3.5 h-3.5" />
                     Copy
                   </button>
                 </div>
-                <div className="p-8">
-                  <div className="prose dark:prose-invert max-w-none">
+                <div className="p-6">
+                  <div className="space-y-4 text-sm text-neutral-700 dark:text-neutral-300 leading-relaxed">
                     {decodedText.split('\n').map((line, idx) => (
-                      <p key={idx} className="mb-4 text-gray-800 dark:text-gray-200 text-base leading-relaxed">
-                        {line}
-                      </p>
+                      <p key={idx}>{line}</p>
                     ))}
                   </div>
                 </div>
@@ -498,7 +504,7 @@ Provide the response in this format:
             )}
           </div>
         </div>
-      </div>
+      </section>
     </div>
   );
 }
