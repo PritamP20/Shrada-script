@@ -3,6 +3,8 @@ import express from "express";
 // @ts-ignore
 import cors from "cors";
 import fs from "fs";
+// @ts-ignore
+import client from "../DB/index.js";
 
 const client = new Client()
   .setEndpoint("https://frankfut.cloud.appwrite.io/v1")
