@@ -1,0 +1,71 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String    @id @default(cuid())
+  email     String    @unique
+  name      String
+  role      Role      @default(USER)  
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  // Relations
+  assignedAdmins AdminAssignment[]  @relation("SuperAdminAssignments") 
+  assignedBy     AdminAssignment[]  @relation("AdminAssignments")    
+  documents      Document[]         
+  purchases      Purchase[]         
+}
+
+model AdminAssignment {
+  id           String   @id @default(cuid())
+  superAdmin   User     @relation("SuperAdminAssignments", fields: [superAdminId], references: [id])
+  superAdminId String
+  admin        User     @relation("AdminAssignments", fields: [adminId], references: [id])
+  adminId      String
+  assignedAt   DateTime @default(now())
+}
+
+model Document {
+  id           String    @id @default(cuid())
+  title        String
+  description  String?
+  fileUrl      String    // URL from Appwrite bucket
+  price        Float
+  isForRent    Boolean   @default(false)
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  // Relations
+  addedBy      User      @relation(fields: [addedById], references: [id])
+  addedById    String
+  purchases    Purchase[]
+}
+
+model Purchase {
+  id         String    @id @default(cuid())
+  user       User      @relation(fields: [userId], references: [id])
+  userId     String
+  document   Document  @relation(fields: [documentId], references: [id])
+  documentId String
+  type       PurchaseType  @default(BUY) // BUY or RENT
+  createdAt  DateTime      @default(now())
+  expiresAt  DateTime?     // only for RENT
+}
+
+enum Role {
+  SUPERADMIN
+  ADMIN
+  USER
+}
+
+enum PurchaseType {
+  BUY
+  RENT
+}
