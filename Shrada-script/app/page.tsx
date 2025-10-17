@@ -23,7 +23,7 @@ export default function ShadaAILanding() {
   return (
     <div className="min-h-screen bg-white dark:bg-gray-900 transition-colors duration-300">
       {/* Navigation */}
-      <Navbar></Navbar>
+      {/* <Navbar></Navbar> */}
 
       {/* <div className='h-48 text-8xl p-9 bg-white dark:bg-black ' >
         hello

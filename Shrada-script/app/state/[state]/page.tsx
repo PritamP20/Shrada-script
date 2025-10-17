@@ -213,9 +213,9 @@ Provide the response in this format:
   }
 
   return (
-    <div className="min-h-screen bg-neutral-50 dark:bg-neutral-950">
+    <div className="min-h-screen mt-28 bg-neutral-50 dark:bg-neutral-950">
       {/* Minimal Header */}
-      <header className="sticky top-0 z-50 bg-white/80 dark:bg-neutral-900/80 backdrop-blur-xl border-b border-neutral-200 dark:border-neutral-800">
+      {/* <header className="sticky top-0 z-50 bg-white/80 dark:bg-neutral-900/80 backdrop-blur-xl border-b border-neutral-200 dark:border-neutral-800">
         <div className="max-w-7xl mx-auto px-6 lg:px-8 py-4 flex items-center justify-between">
           <button
             onClick={() => router.back()}
@@ -229,7 +229,7 @@ Provide the response in this format:
             <span>{stateName}</span>
           </div>
         </div>
-      </header>
+      </header> */}
 
       {/* Hero with Organic Layout */}
       <section className="max-w-7xl mx-auto px-6 lg:px-8 pt-12 pb-20">

@@ -3,7 +3,7 @@ import express from "express";
 import cors from "cors";
 import fs from "fs";
 
-import { Role, PurchaseType } from "../types/types.ts"; // import the types
+import { Role, PurchaseType } from "../types/types.ts"; 
 import { PrismaClient } from "@prisma/client";
 import { Client as AppwriteClient, Storage, ID } from "appwrite";
 

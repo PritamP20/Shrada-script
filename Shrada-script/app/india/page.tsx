@@ -2,9 +2,10 @@
 
 import { GoogleGenAI } from "@google/genai";
 import React, { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 // @ts-ignore
 import India from "@svg-maps/india";
-import { MapPin, Users, Globe, Languages, Clock, Palette, Sparkles } from "lucide-react";
+import { MapPin, Users, Globe, Languages, Clock, Palette, Sparkles, ArrowRight } from "lucide-react";
 
 interface Location {
   id: string;
@@ -69,6 +70,7 @@ async function generateStateData(state: string): Promise<StateData | null> {
 }
 
 export default function Page() {
+  const router = useRouter();
   const [selected, setSelected] = useState<string | null>(null);
   const [selectedData, setSelectedData] = useState<StateData | null>(null);
   const [loading, setLoading] = useState(false);
@@ -115,7 +117,7 @@ export default function Page() {
   }, [selected]);
 
   return (
-    <div className="min-h-screen bg-neutral-50 dark:bg-neutral-950 p-8">
+    <div className="min-h-screen mt-28 bg-neutral-50 dark:bg-neutral-950 p-8">
       <div className="max-w-[1800px] mx-auto">
         {/* Header */}
         <div className="mb-12 text-center">
@@ -150,7 +152,16 @@ export default function Page() {
                 </div>
               ) : selectedData ? (
                 <div className="p-8">
-                  <h2 className="text-2xl font-bold text-neutral-900 dark:text-neutral-100 mb-6">{selected}</h2>
+                  <div className="flex items-center justify-between mb-6">
+                    <h2 className="text-2xl font-bold text-neutral-900 dark:text-neutral-100">{selected}</h2>
+                    <button
+                      onClick={() => router.push(`/state/${encodeURIComponent(selected!)}`)}
+                      className="flex items-center gap-2 px-4 py-2 bg-neutral-900 dark:bg-neutral-100 text-white dark:text-neutral-900 rounded-lg font-medium hover:opacity-90 transition-opacity text-sm"
+                    >
+                      View More
+                      <ArrowRight className="w-4 h-4" />
+                    </button>
+                  </div>
                   
                   {/* Quick Stats */}
                   <div className="space-y-3 mb-8 pb-8 border-b border-neutral-200 dark:border-neutral-800">
